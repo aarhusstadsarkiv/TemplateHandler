@@ -28,6 +28,8 @@ namespace TemplateHandler
                 
                 ArchiveFileContext db = new ArchiveFileContext(dbPath);
 
+                byte[] templateContent = File.ReadAllBytes(templatePath);
+
                 try
                 {
                     List<ArchiveFile> files = GetArchiveFiles(queryParameter, db);
@@ -39,7 +41,7 @@ namespace TemplateHandler
                         // Create an action delegate that specifies the task to run.
                         Action<object> action = (object file) =>
                         {
-                            TemplateWriter.InsertTemplate(file, destinationRoot, templatePath);
+                            TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
                         };
 
                         // Create a task object based on the action
