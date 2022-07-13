@@ -11,7 +11,7 @@ namespace TemplateHandler
        The ArchiveFile class based on the schema for the Files table in the database.
         Each row in the Files table will be parsed as an ArchiveFile object with the Entity Framework.
      */
-    internal class ArchiveFile
+    public class ArchiveFile
     {
 
         [Column("id")]
@@ -44,5 +44,19 @@ namespace TemplateHandler
          */
         [Column("warning")]
         public string? Warning { get; set; }
+
+        public ArchiveFile(int iD, string uUID, string relativePath, string checksum, string puid,
+                            string signature, int isBinary, long filesize, string? warning)
+        {
+            ID = iD;
+            UUID = uUID;
+            RelativePath = relativePath;
+            Checksum = checksum;
+            Puid = puid;
+            Signature = signature;
+            IsBinary = isBinary;
+            Filesize = filesize;
+            Warning = warning;
+        }
     }
 }

@@ -23,15 +23,17 @@ namespace TemplateHandler
                 // Use named variables or Enumeration type.
                 string dbPath = args[0];
                 string queryParameter = args[1];
-                string templatePath = args[2];
+                int templateID;
+                int.TryParse(args[2], out templateID);
                 string destinationRoot = args[3];
                 
                 ArchiveFileContext db = new ArchiveFileContext(dbPath);
-
-                byte[] templateContent = File.ReadAllBytes(templatePath);
+                
+                
 
                 try
                 {
+                    byte[] templateContent = TemplateWriter.GetTemplateFile(templateID);
                     List<ArchiveFile> files = GetArchiveFiles(queryParameter, db);
 
                     List<Task> tasks = new List<Task>();
@@ -64,6 +66,12 @@ namespace TemplateHandler
                 {     
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Closing application.");
+                    Environment.Exit(1);
+                }
+
+                catch(ArgumentException e)
+                {
+                    Console.WriteLine(e.Message);
                     Environment.Exit(1);
                 }
 
@@ -104,6 +112,8 @@ namespace TemplateHandler
             {
                 throw new NoFilesFoundException("There where no files with the specified query parameter: " + queryParameter);
             }
-        } 
+        }
+        
+       
     }
 }
