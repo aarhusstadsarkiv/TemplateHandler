@@ -1,0 +1,30 @@
+name: Releases
+
+on: 
+  push:
+    branches: [ "main" ]
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release TemplateHandler
+    - name: ZIP
+      run: Compress-Archive -Path TemplateHandler\bin\Release -DestinationPath templateHandler.zip
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "templateHandler.zip"
+        bodyFile: "body.md"
+        token: ${{ secrets.GITHUB_TOKEN }}
