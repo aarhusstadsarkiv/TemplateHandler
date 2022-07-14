@@ -58,7 +58,7 @@ namespace TemplateHandlerTests
                                                 "WEIIHFRIWEHF136287136821634", "fmt/40", "Word file", 1, 200, null);
             string destinationRoot = Path.Combine(Directory.GetCurrentDirectory(), "MasterDocuments");
 
-            byte[] templateContent = Resource.file_not_preservable;
+            byte[] templateContent = File.ReadAllBytes("Images/file_not_preservable.tif");
             string outputFile = TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
             string expected = Path.Combine(destinationRoot, testRelPath);
             Assert.AreEqual(expected, outputFile);
