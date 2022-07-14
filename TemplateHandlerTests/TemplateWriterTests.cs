@@ -10,7 +10,7 @@ namespace TemplateHandlerTests
         private string testRelPath { get; set; }
         private char pathSeperator { get; set; }
 
-        private string getHasAsString(byte[] hash)
+        private string getHashAsString(byte[] hash)
         {
             StringBuilder Sb = new StringBuilder();
             foreach (byte b in hash)
@@ -53,7 +53,6 @@ namespace TemplateHandlerTests
 
 
 
-
         [TestMethod]
         public void TestTemplateWriterInsertTemplateCorrect()
         {
@@ -68,7 +67,7 @@ namespace TemplateHandlerTests
             int parentIndex = testRelPath.LastIndexOf(pathSeperator);
             string testRelPathParent = testRelPath.Substring(0, parentIndex);
             string expected = Path.Combine(destinationRoot, testRelPathParent, "1.tif");
-           
+
             Assert.AreEqual(expected, outputFile);
             Assert.IsTrue(File.Exists(outputFile));
 
@@ -90,8 +89,8 @@ namespace TemplateHandlerTests
             byte[] expectedHash = sha256.ComputeHash(expectedContent);
 
             // Convert the hash to a string.
-            string templateHashString = getHasAsString(templateHash);
-            string expectedHashString = getHasAsString(expectedHash);
+            string templateHashString = getHashAsString(templateHash);
+            string expectedHashString = getHashAsString(expectedHash);
 
             // Assert that the string hahshes are equal.
             Assert.AreEqual(expectedHashString, templateHashString);

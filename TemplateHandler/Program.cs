@@ -10,7 +10,7 @@
                 Console.WriteLine(helpText);
             }
 
-            else if (args[0].Contains("files.db") == false)
+            else if (args[0].EndsWith("files.db") == false)
             {
                 Console.WriteLine("Invalid argument specified for database.");
                 Console.WriteLine("Run program with --help to get documentation on how to use the tool");
