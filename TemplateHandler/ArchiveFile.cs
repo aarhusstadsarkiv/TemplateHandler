@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TemplateHandler
 {
@@ -11,7 +6,7 @@ namespace TemplateHandler
        The ArchiveFile class based on the schema for the Files table in the database.
         Each row in the Files table will be parsed as an ArchiveFile object with the Entity Framework.
      */
-    internal class ArchiveFile
+    public class ArchiveFile
     {
 
         [Column("id")]
@@ -27,10 +22,10 @@ namespace TemplateHandler
         public string Checksum { get; set; }
 
         [Column("puid")]
-        public string Puid  { get; set; }
+        public string Puid { get; set; }
 
         [Column("signature")]
-        public string Signature { get; set;}
+        public string Signature { get; set; }
 
         [Column("is_binary")]
         public int IsBinary { get; set; }
@@ -44,5 +39,19 @@ namespace TemplateHandler
          */
         [Column("warning")]
         public string? Warning { get; set; }
+
+        public ArchiveFile(int iD, string uUID, string relativePath, string checksum, string puid,
+                            string signature, int isBinary, long filesize, string? warning)
+        {
+            ID = iD;
+            UUID = uUID;
+            RelativePath = relativePath;
+            Checksum = checksum;
+            Puid = puid;
+            Signature = signature;
+            IsBinary = isBinary;
+            Filesize = filesize;
+            Warning = warning;
+        }
     }
 }
