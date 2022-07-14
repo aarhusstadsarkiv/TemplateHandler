@@ -39,7 +39,7 @@ namespace TemplateHandlerTests
         {
             if (System.OperatingSystem.IsWindows())
             {
-                testRelPath = "docCollection1\\10\\1.tif";
+                testRelPath = "docCollection1\\10\\1.docx";
             }
 
             else
@@ -60,7 +60,11 @@ namespace TemplateHandlerTests
 
             byte[] templateContent = File.ReadAllBytes("Images/file_not_preservable.tif");
             string outputFile = TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
-            string expected = Path.Combine(destinationRoot, testRelPath);
+
+            // The expected path is destination root combined with the parent of testRelPath combined with "1.tif".
+            string testRelPathParent = Directory.GetParent(testRelPath).FullName;
+            string expected = Path.Combine(destinationRoot, testRelPathParent, "1.tif");
+           
             Assert.AreEqual(expected, outputFile);
             Assert.IsTrue(File.Exists(outputFile));
 
