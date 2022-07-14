@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TemplateHandler
 {
@@ -27,10 +22,10 @@ namespace TemplateHandler
         public string Checksum { get; set; }
 
         [Column("puid")]
-        public string Puid  { get; set; }
+        public string Puid { get; set; }
 
         [Column("signature")]
-        public string Signature { get; set;}
+        public string Signature { get; set; }
 
         [Column("is_binary")]
         public int IsBinary { get; set; }

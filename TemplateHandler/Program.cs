@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-namespace TemplateHandler
+﻿namespace TemplateHandler
 {
     internal class Program
     {
@@ -19,22 +18,27 @@ namespace TemplateHandler
 
             else
             {
-                
+
                 // Use named variables or Enumeration type.
                 string dbPath = args[0];
                 string queryParameter = args[1];
                 int templateID;
                 int.TryParse(args[2], out templateID);
                 string destinationRoot = args[3];
-                
+
                 ArchiveFileContext db = new ArchiveFileContext(dbPath);
-                
-                
+
 
                 try
                 {
                     byte[] templateContent = TemplateWriter.GetTemplateFile(templateID);
                     List<ArchiveFile> files = GetArchiveFiles(queryParameter, db);
+
+                    if (files.Count == 0)
+                    {
+                        Console.WriteLine("No files found. Closing application");
+                        Environment.Exit(0);
+                    }
 
                     List<Task> tasks = new List<Task>();
 
@@ -57,32 +61,27 @@ namespace TemplateHandler
                     {
                         task.Start();
                     }
-                   
+
                     Task.WaitAll(tasks.ToArray());
                     Console.WriteLine("Finished adding templates.");
                 }
 
-                catch (NoFilesFoundException e) 
-                {     
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Closing application.");
-                    Environment.Exit(1);
-                }
 
-                catch(ArgumentException e)
+
+                catch (ArgumentException e)
                 {
                     Console.WriteLine(e.Message);
                     Environment.Exit(1);
                 }
 
-                catch (Exception e) 
-                { 
+                catch (Exception e)
+                {
                     Console.WriteLine(e.StackTrace);
                     Console.WriteLine("Closing application.");
                     Environment.Exit(1);
                 }
-                 
-               
+
+
             }
         }
 
@@ -92,28 +91,20 @@ namespace TemplateHandler
             // If the query parameter is less than 10 chars, we have a puid.
             if (queryParameter.Length < 10)
             {
-                
+
                 files = db.Files.Where(f => f.Puid == queryParameter).ToList();
             }
-            
+
             // Else, it must be a checksum.
             else
             {
-                
+
                 files = db.Files.Where(f => f.Checksum == queryParameter).ToList();
             }
 
-            if(files.Count > 0)
-            {
-                return files;
-            }
-
-            else
-            {
-                throw new NoFilesFoundException("There where no files with the specified query parameter: " + queryParameter);
-            }
+            return files;
         }
-        
-       
+
+
     }
 }
