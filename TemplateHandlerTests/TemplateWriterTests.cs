@@ -8,6 +8,7 @@ namespace TemplateHandlerTests
     public class TemplateWriterTests
     {
         private string testRelPath { get; set; }
+        private char pathSeperator { get; set; }
 
         private string getHasAsString(byte[] hash)
         {
@@ -40,11 +41,13 @@ namespace TemplateHandlerTests
             if (System.OperatingSystem.IsWindows())
             {
                 testRelPath = "docCollection1\\10\\1.docx";
+                pathSeperator = '\\';
             }
 
             else
             {
                 testRelPath = "docCollection1/10/1.docx";
+                pathSeperator = '/';
             }
         }
 
@@ -62,7 +65,8 @@ namespace TemplateHandlerTests
             string outputFile = TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
 
             // The expected path is destination root combined with the parent of testRelPath combined with "1.tif".
-            string testRelPathParent = Directory.GetParent(testRelPath).FullName;
+            int parentIndex = testRelPath.LastIndexOf(pathSeperator);
+            string testRelPathParent = testRelPath.Substring(0, parentIndex);
             string expected = Path.Combine(destinationRoot, testRelPathParent, "1.tif");
            
             Assert.AreEqual(expected, outputFile);
