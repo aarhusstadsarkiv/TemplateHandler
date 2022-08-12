@@ -45,7 +45,7 @@
                     foreach (ArchiveFile file in files)
                     {
                         // Create an action delegate that specifies the task to run.
-                        Action<object> action = (object file) =>
+                        Action<object?> action = (object? file) =>
                         {
                             TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
                         };
