@@ -47,7 +47,10 @@
                         // Create an action delegate that specifies the task to run.
                         Action<object?> action = (object? file) =>
                         {
-                            TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
+                            if (file != null)
+                            {
+                                TemplateWriter.InsertTemplate(file, destinationRoot, templateContent);
+                            }
                         };
 
                         // Create a task object based on the action
@@ -56,7 +59,7 @@
                         tasks.Add(t1);
                     }
 
-                    Console.WriteLine(String.Format("Found {0} files. Inserting templates."), files.Count);
+                    Console.WriteLine(String.Format("Found {0} files. Inserting templates.", files.Count));
                     foreach (Task task in tasks)
                     {
                         task.Start();
