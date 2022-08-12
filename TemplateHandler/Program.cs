@@ -4,9 +4,11 @@
     {
         static void Main(string[] args)
         {
+            string execPath = AppDomain.CurrentDomain.BaseDirectory;
             if (args[0] == "--help")
             {
-                string helpText = File.ReadAllText("Readme.txt");
+                string helpTextFile = Path.Combine(execPath, "Readme.txt");
+                string helpText = File.ReadAllText(helpTextFile);
                 Console.WriteLine(helpText);
             }
 
@@ -31,7 +33,7 @@
 
                 try
                 {
-                    byte[] templateContent = TemplateWriter.GetTemplateFile(templateID);
+                    byte[] templateContent = TemplateWriter.GetTemplateFile(templateID, execPath);
                     List<ArchiveFile> files = GetArchiveFiles(queryParameter, db);
 
                     if (files.Count == 0)
