@@ -9,6 +9,7 @@ namespace TemplateHandlerTests
     {
         private string testRelPath { get; set; }
         private char pathSeperator { get; set; }
+        private string execPath { get; set; }
 
         private string getHashAsString(byte[] hash)
         {
@@ -49,6 +50,8 @@ namespace TemplateHandlerTests
                 testRelPath = "docCollection1/10/1.docx";
                 pathSeperator = '/';
             }
+
+            execPath = AppDomain.CurrentDomain.BaseDirectory;
         }
 
 
@@ -81,7 +84,7 @@ namespace TemplateHandlerTests
             int testID = 1;
             SHA256 sha256 = SHA256.Create();
 
-            byte[] templateContent = TemplateWriter.GetTemplateFile(testID);
+            byte[] templateContent = TemplateWriter.GetTemplateFile(testID, execPath);
             byte[] expectedContent = File.ReadAllBytes("Images/file_empty.tif");
 
             // Compute the hash of th two files.
@@ -101,7 +104,7 @@ namespace TemplateHandlerTests
         public void GetTemplateFileTestNonValidID()
         {
             int testID = 500;
-            Assert.ThrowsException<ArgumentException>(() => TemplateWriter.GetTemplateFile(testID));
+            Assert.ThrowsException<ArgumentException>(() => TemplateWriter.GetTemplateFile(testID, execPath));
         }
     }
 }

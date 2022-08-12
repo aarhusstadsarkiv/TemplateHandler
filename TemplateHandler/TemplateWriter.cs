@@ -21,25 +21,25 @@
             return outputFile;
         }
 
-        public static byte[] GetTemplateFile(int id)
+        public static byte[] GetTemplateFile(int id, string execPath)
         {
             string filePath;
             switch (id)
             {
                 case 0:
-                    filePath = "Images/file_damaged.tif";
+                    filePath = Path.Combine(execPath, "Images/file_damaged.tif");
                     break;
                 case 1:
-                    filePath = "Images/file_empty.tif";
+                    filePath = Path.Combine(execPath, "Images/file_empty.tif");
                     break;
                 case 2:
-                    filePath = "Images/file_not_convertable.tif";
+                    filePath = Path.Combine(execPath, "Images/file_not_convertable.tif");
                     break;
                 case 3:
-                    filePath = "Images/file_not_preservable.tif";
+                    filePath = Path.Combine(execPath, "Images/file_not_preservable.tif");
                     break;
                 case 4:
-                    filePath = "Images/password_protected.tif";
+                    filePath = Path.Combine(execPath, "Images/password_protected.tif");
                     break;
                 default:
                     filePath = "NULL";
