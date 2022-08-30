@@ -31,7 +31,7 @@ namespace TemplateHandler
         public int IsBinary { get; set; }
 
         [Column("file_size_in_bytes")]
-        public long Filesize;
+        public long Filesize { get; set; }
 
         /*
          * A nullable value type T? represents all values of its underlying value type T and an additional null value. 
