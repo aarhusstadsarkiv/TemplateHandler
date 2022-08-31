@@ -22,10 +22,10 @@ namespace TemplateHandler
         public string Checksum { get; set; }
 
         [Column("puid")]
-        public string Puid { get; set; }
+        public string? Puid { get; set; }
 
         [Column("signature")]
-        public string Signature { get; set; }
+        public string? Signature { get; set; }
 
         [Column("is_binary")]
         public int IsBinary { get; set; }
@@ -53,5 +53,46 @@ namespace TemplateHandler
             Filesize = filesize;
             Warning = warning;
         }
+
+
+        private static string[] getChecksums(string filePath)
+        {
+            string[] checksums = File.ReadAllLines(filePath);
+            for (int i = 0; i < checksums.Length; i++)
+            {
+                checksums[i] = checksums[i].Replace("\n", String.Empty);
+            }
+            return checksums;
+        }
+
+        public static List<ArchiveFile> GetArchiveFiles(string queryParameter, IArchiveFileContext db)
+        {
+            List<ArchiveFile> files;
+
+            // If the query parameter is the path to a text file that contains checksums.
+            if (queryParameter.EndsWith(".txt"))
+            {
+                string[] checksums = getChecksums(queryParameter);
+                files = db.Files.Where(f => checksums.Contains(f.Checksum)).ToList();
+                Console.WriteLine(files.Count);
+            }
+
+            // If the query parameter is less than 10 chars, we have a puid.
+            else if (queryParameter.Length < 10)
+            {
+
+                files = db.Files.Where(f => f.Puid == queryParameter).ToList();
+            }
+
+            // Else, it must be a checksum.
+            else
+            {
+
+                files = db.Files.Where(f => f.Checksum == queryParameter).ToList();
+            }
+
+            return files;
+        }
+
     }
 }
