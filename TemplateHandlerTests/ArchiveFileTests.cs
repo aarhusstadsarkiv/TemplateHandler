@@ -1,12 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using TemplateHandler;
 
 namespace TemplateHandlerTests
@@ -14,6 +8,8 @@ namespace TemplateHandlerTests
     [TestClass]
     public class ArchiveFileTests
     {
+        // Variables used in the tests.
+        // They are initialized in the Initialize function decorated with [TestInitialize()].
         private TestArchiveFileContext archiveFileContext { get; set; }
         private ArchiveFile file1;
         private ArchiveFile file2;
@@ -60,14 +56,19 @@ namespace TemplateHandlerTests
                 createTable.ExecuteNonQuery();
             }
 
-            file1 = new ArchiveFile(1, "182091849843", "testData/1.pdf", "7592745734CFC1", "fmt/20", "Acrobat PDF 1.6", 1, 2000, null);
+            file1 = new ArchiveFile(1, "182091849843", "testData/1.pdf", "7592745734CFC1", "fmt/20",
+                                    "Acrobat PDF 1.6", 1, 2000, null);
+
             file2 = new ArchiveFile(2, "282091849843", "testData/2.png", "8592745734CFC1", "fmt/11",
-                            "Portable Network Graphics (PNG) version 1", 1, 2000, null);
+                                    "Portable Network Graphics (PNG) version 1", 1, 2000, null);
+
             file3 = new ArchiveFile(3, "282091849844", "testData/3.png", "8592745734CFC1", "fmt/11",
-                            "Portable Network Graphics (PNG) version 1", 1, 2000, null);
+                                    "Portable Network Graphics (PNG) version 1", 1, 2000, null);
+            
             archiveFileContext.AddRange(
-               file1, file2, file3
-                );
+                    file1, file2, file3
+            );
+
             archiveFileContext.SaveChanges();
 
             initChecksumFile();
@@ -81,11 +82,14 @@ namespace TemplateHandlerTests
             File.Delete(checksumFilePath);
         }
 
+        // The Arrange step in the following GetArchiveFiles tests happens in the Initialize method.
+
         [TestMethod]
         public void TestGetArchiveFilesByPuid()
         {
-            
+
             List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles("fmt/20", archiveFileContext);
+
             CollectionAssert.Contains(retrievedFiles, file1);
             CollectionAssert.DoesNotContain(retrievedFiles, file2);
             Assert.IsTrue(retrievedFiles.Count == 1);
@@ -97,10 +101,10 @@ namespace TemplateHandlerTests
         {
 
             List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles("8592745734CFC1", archiveFileContext);
+
             CollectionAssert.Contains(retrievedFiles, file2);
             CollectionAssert.Contains(retrievedFiles, file3);
             CollectionAssert.DoesNotContain(retrievedFiles, file1);
-
             Assert.IsTrue(retrievedFiles.Count == 2);
 
         }
@@ -110,10 +114,10 @@ namespace TemplateHandlerTests
         {
 
             List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles(checksumFilePath, archiveFileContext);
+
             CollectionAssert.Contains(retrievedFiles, file1);
             CollectionAssert.Contains(retrievedFiles, file2);
             CollectionAssert.Contains(retrievedFiles, file3);
-
             Assert.IsTrue(retrievedFiles.Count == 3);
 
         }
