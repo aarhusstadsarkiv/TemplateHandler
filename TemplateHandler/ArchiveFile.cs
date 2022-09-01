@@ -8,7 +8,9 @@ namespace TemplateHandler
      */
     public class ArchiveFile
     {
-
+        // The value just needs to be less than 64.
+        private const int PUID_MAX_LENGTH =  28;
+        
         [Column("id")]
         public int ID { get; set; }
 
@@ -77,8 +79,8 @@ namespace TemplateHandler
                 Console.WriteLine(files.Count);
             }
 
-            // If the query parameter is less than 10 chars, we have a puid.
-            else if (queryParameter.Length < 10)
+            // If the query parameter is less than PUID_MAX_LENGTH chars, we have a puid.
+            else if (queryParameter.Length < PUID_MAX_LENGTH)
             {
 
                 files = db.Files.Where(f => f.Puid == queryParameter).ToList();

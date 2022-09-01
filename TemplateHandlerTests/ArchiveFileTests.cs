@@ -15,6 +15,8 @@ namespace TemplateHandlerTests
         private ArchiveFile file2;
         private ArchiveFile file3;
         private string checksumFilePath;
+        private string file1Checksum { get; set; }
+        private string file2Checksum { get; set; }
 
         private void initChecksumFile()
         {
@@ -29,6 +31,10 @@ namespace TemplateHandlerTests
         [TestInitialize()]
         public void Initialize()
         {
+            // Randomly generated checksums.
+            file1Checksum = "12AAEC23D1B0E0DE561F54F8BB9C45E58806429134224F0A519A59204BC81BE9";
+            file2Checksum = "46403F0A3C6948ADAA0C9ABC58845999FD92C9CF629AA375D7171C365BAA4334";
+            
             DbConnection _connection = new SqliteConnection("Filename=:memory:");
             _connection.Open();
             DbContextOptions<TestArchiveFileContext> options =
@@ -56,13 +62,16 @@ namespace TemplateHandlerTests
                 createTable.ExecuteNonQuery();
             }
 
-            file1 = new ArchiveFile(1, "182091849843", "testData/1.pdf", "7592745734CFC1", "fmt/20",
+            file1 = new ArchiveFile(1, "182091849843", "testData/1.pdf",
+                                    file1Checksum, "fmt/20",
                                     "Acrobat PDF 1.6", 1, 2000, null);
 
-            file2 = new ArchiveFile(2, "282091849843", "testData/2.png", "8592745734CFC1", "fmt/11",
+            file2 = new ArchiveFile(2, "282091849843", "testData/2.png", file2Checksum, "fmt/11",
                                     "Portable Network Graphics (PNG) version 1", 1, 2000, null);
 
-            file3 = new ArchiveFile(3, "282091849844", "testData/3.png", "8592745734CFC1", "fmt/11",
+            // Note that the checksum for file2 and file3 is identical, as they
+            // represent duplicates of the same file in the test.
+            file3 = new ArchiveFile(3, "282091849844", "testData/3.png", file2Checksum, "fmt/11",
                                     "Portable Network Graphics (PNG) version 1", 1, 2000, null);
             
             archiveFileContext.AddRange(
@@ -100,7 +109,7 @@ namespace TemplateHandlerTests
         public void TestGetArchiveFilesByChecksum()
         {
 
-            List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles("8592745734CFC1", archiveFileContext);
+            List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles(file2Checksum, archiveFileContext);
 
             CollectionAssert.Contains(retrievedFiles, file2);
             CollectionAssert.Contains(retrievedFiles, file3);
