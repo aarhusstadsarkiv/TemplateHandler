@@ -3,7 +3,12 @@
 
 namespace TemplateHandler
 {
-    internal class ArchiveFileContext : DbContext
+    /*
+        The following class represents a DbContext for a files.db file with a Files table
+        where each row represents an ArchiveFile.
+        These archivefiles are parsed in to the Files DbSet. 
+     */
+    public class ArchiveFileContext : DbContext, IArchiveFileContext
     {
         public DbSet<ArchiveFile> Files { get; set; }
         public string DbPath { get; }

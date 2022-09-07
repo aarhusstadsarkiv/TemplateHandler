@@ -21,20 +21,20 @@
             else
             {
 
-                // Use named variables or Enumeration type.
-                string dbPath = args[0];
-                string queryParameter = args[1];
-                int templateID;
-                int.TryParse(args[2], out templateID);
-                string destinationRoot = args[3];
-
-                ArchiveFileContext db = new ArchiveFileContext(dbPath);
+            // Use named variables or Enumeration type.
+            string dbPath = args[0];
+            string queryParameter = args[1];
+            int templateID;
+            int.TryParse(args[2], out templateID);
+            string destinationRoot = args[3];
+            
+            ArchiveFileContext db = new ArchiveFileContext(dbPath);
 
 
                 try
                 {
                     byte[] templateContent = TemplateWriter.GetTemplateFile(templateID, execPath);
-                    List<ArchiveFile> files = GetArchiveFiles(queryParameter, db);
+                    List<ArchiveFile> files = ArchiveFile.GetArchiveFiles(queryParameter, db);
 
                     if (files.Count == 0)
                     {
@@ -79,8 +79,17 @@
                     Environment.Exit(1);
                 }
 
+                catch(FileNotFoundException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(1);
+                }
                 catch (Exception e)
                 {
+                    Console.WriteLine("Exception message: ");
+                    Console.WriteLine(e.Message);
+
+                    Console.WriteLine("Stacktrace: ");
                     Console.WriteLine(e.StackTrace);
                     Console.WriteLine("Closing application.");
                     Environment.Exit(1);
@@ -89,27 +98,6 @@
 
             }
         }
-
-        private static List<ArchiveFile> GetArchiveFiles(string queryParameter, ArchiveFileContext db)
-        {
-            List<ArchiveFile> files;
-            // If the query parameter is less than 10 chars, we have a puid.
-            if (queryParameter.Length < 10)
-            {
-
-                files = db.Files.Where(f => f.Puid == queryParameter).ToList();
-            }
-
-            // Else, it must be a checksum.
-            else
-            {
-
-                files = db.Files.Where(f => f.Checksum == queryParameter).ToList();
-            }
-
-            return files;
-        }
-
 
     }
 }
