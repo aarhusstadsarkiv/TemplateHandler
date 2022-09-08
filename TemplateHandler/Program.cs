@@ -1,4 +1,7 @@
-﻿namespace TemplateHandler
+﻿using System.Reflection;
+
+
+namespace TemplateHandler
 {
     internal class Program
     {
@@ -12,6 +15,12 @@
                 Console.WriteLine(helpText);
             }
 
+            else if (args[0] == "--version")
+            {
+                string version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+                Console.WriteLine("This is TemplateHandler version: " + version);
+            }
+
             else if (args[0].EndsWith("files.db") == false)
             {
                 Console.WriteLine("Invalid argument specified for database.");
@@ -21,14 +30,14 @@
             else
             {
 
-            // Use named variables or Enumeration type.
-            string dbPath = args[0];
-            string queryParameter = args[1];
-            int templateID;
-            int.TryParse(args[2], out templateID);
-            string destinationRoot = args[3];
+                // Use named variables or Enumeration type.
+                string dbPath = args[0];
+                string queryParameter = args[1];
+                int templateID;
+                int.TryParse(args[2], out templateID);
+                string destinationRoot = args[3];
             
-            ArchiveFileContext db = new ArchiveFileContext(dbPath);
+                ArchiveFileContext db = new ArchiveFileContext(dbPath);
 
 
                 try
