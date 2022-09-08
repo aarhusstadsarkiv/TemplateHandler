@@ -1,4 +1,8 @@
-﻿namespace TemplateHandler
+﻿using System.Reflection;
+
+[assembly: AssemblyVersion("1.0.4.0")]
+
+namespace TemplateHandler
 {
     internal class Program
     {
@@ -10,6 +14,12 @@
                 string helpTextFile = Path.Combine(execPath, "Readme.txt");
                 string helpText = File.ReadAllText(helpTextFile);
                 Console.WriteLine(helpText);
+            }
+
+            else if (args[0] == "--version")
+            {
+                string version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+                Console.WriteLine("This is TemplateHandler version: " + version);
             }
 
             else if (args[0].EndsWith("files.db") == false)
