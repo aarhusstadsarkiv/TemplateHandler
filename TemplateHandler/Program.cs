@@ -21,14 +21,14 @@
             else
             {
 
-            // Use named variables or Enumeration type.
-            string dbPath = args[0];
-            string queryParameter = args[1];
-            int templateID;
-            int.TryParse(args[2], out templateID);
-            string destinationRoot = args[3];
+                // Use named variables or Enumeration type.
+                string dbPath = args[0];
+                string queryParameter = args[1];
+                int templateID;
+                int.TryParse(args[2], out templateID);
+                string destinationRoot = args[3];
             
-            ArchiveFileContext db = new ArchiveFileContext(dbPath);
+                ArchiveFileContext db = new ArchiveFileContext(dbPath);
 
 
                 try
