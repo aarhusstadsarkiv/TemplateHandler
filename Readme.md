@@ -2,6 +2,8 @@
 This is the TemplateHandler tool from Aarhus City Archives.
 This tool is used to insert a template file for given files.
 
+# Dependencies
+This tool only has 1 external dependency which is the .NET Runtime. This project targets .NET 6.0 and the runtime is provided by Microsoft at https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime
 # Usage
 To use the program do one of the following:
 * Open a command prompt and navigate to the folder containing the executable.
