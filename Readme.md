@@ -19,17 +19,19 @@ The program takes 4 arguments, which are listed below:
     * A checksum.
     * A path to a txt file that consists of newline seperated checksums.
 
-3. The ID of the template you want to use. Possible values are listed below:
+3. The ID of the template you want to use. This is specified as a number. Possible values are listed below:
     ```
-    0: File damaged template.
-    1: File empty template.
-    2: File not convertable template.
-    3: File not preservable template.
-    4: Password protected template.
- ```
+      0: File damaged template.
+      1: File empty template.
+      2: File not convertable template.
+      3: File not preservable template.
+      4: Password protected template.
+    ```
+ 
 4. The absolute path to the destination folder. This is usually the MasterDocuments folder.
 
 # Example:
+
 ```
 TemplateHandler.exe path_to_db fmt/40 1 path_to_MasterDocuments
 ```
