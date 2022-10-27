@@ -11,6 +11,8 @@ namespace TemplateHandler
     public class ArchiveFileContext : DbContext, IArchiveFileContext
     {
         public DbSet<ArchiveFile> Files { get; set; }
+        public DbSet<ConvertedFile> _ConvertedFiles { get; set; }
+        
         public string DbPath { get; }
 
         public ArchiveFileContext(string dbPath)

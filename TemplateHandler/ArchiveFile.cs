@@ -70,11 +70,12 @@ namespace TemplateHandler
         public static List<ArchiveFile> GetArchiveFiles(string queryParameter, IArchiveFileContext db)
         {
             List<ArchiveFile> files;
-
+            
             // If the query parameter is the path to a text file that contains checksums.
             if (queryParameter.EndsWith(".txt"))
             {
                 string[] checksums = getChecksums(queryParameter);
+
                 files = db.Files.Where(f => checksums.Contains(f.Checksum)).ToList();
                 Console.WriteLine(files.Count);
             }
@@ -90,7 +91,8 @@ namespace TemplateHandler
             else
             {
 
-                files = db.Files.Where(f => f.Checksum == queryParameter).ToList();
+                files = db.Files.Where(f => f.Checksum == queryParameter && db._ConvertedFiles.All(cf => cf.UUID != f.UUID)).ToList();
+               
             }
 
             return files;
