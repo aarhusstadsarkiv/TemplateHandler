@@ -60,6 +60,13 @@ namespace TemplateHandlerTests
 	                                            CHECK (is_binary IN (0, 1))
                                             )";
                 createTable.ExecuteNonQuery();
+
+                createTable.CommandText = @"CREATE TABLE IF NOT Exists ""_ConvertedFiles"" 
+                                            (
+	                                            file_id INTEGER NOT NULL, 
+	                                            uuid VARCHAR NOT NULL, 
+                                                PRIMARY KEY (file_id), 
+                                            )";
             }
 
             file1 = new ArchiveFile(1, "182091849843", "testData/1.pdf",
@@ -115,6 +122,27 @@ namespace TemplateHandlerTests
             CollectionAssert.Contains(retrievedFiles, file3);
             CollectionAssert.DoesNotContain(retrievedFiles, file1);
             Assert.IsTrue(retrievedFiles.Count == 2);
+
+        }
+
+
+        [TestMethod]
+        public void TestGetArchiveFilesByChecksumWhereOneCopyOfFileIsConverted()
+        {
+
+            // Add file2 as a converted file.
+            // The  Cleanup function will dispose archiveFileContext so the change does not persist.
+            ConvertedFile convertedFile = new ConvertedFile(2, "282091849843");
+            archiveFileContext.AddRange(convertedFile);
+            archiveFileContext.SaveChanges();
+
+            List<ArchiveFile> retrievedFiles = ArchiveFile.GetArchiveFiles(file2Checksum, archiveFileContext);
+
+            
+            CollectionAssert.DoesNotContain(retrievedFiles, file1);
+            CollectionAssert.DoesNotContain(retrievedFiles, file2);
+            CollectionAssert.Contains(retrievedFiles, file3);
+            Assert.IsTrue(retrievedFiles.Count == 1);
 
         }
 

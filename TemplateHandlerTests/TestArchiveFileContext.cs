@@ -16,6 +16,7 @@ namespace TemplateHandlerTests
     public class TestArchiveFileContext : DbContext, IArchiveFileContext
     {
         public DbSet<ArchiveFile> Files { get; set; }
+        public DbSet<ConvertedFile> _ConvertedFiles { get; set; }
 
         public TestArchiveFileContext(DbContextOptions<TestArchiveFileContext> options) : base(options)
         {

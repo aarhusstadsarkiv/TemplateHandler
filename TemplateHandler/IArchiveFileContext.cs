@@ -16,5 +16,6 @@ namespace TemplateHandler
     {
 
         DbSet<ArchiveFile> Files { get; set; }
+        DbSet<ConvertedFile> _ConvertedFiles { get; set; }
     }
 }
