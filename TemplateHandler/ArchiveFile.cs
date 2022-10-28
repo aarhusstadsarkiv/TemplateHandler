@@ -76,7 +76,7 @@ namespace TemplateHandler
             {
                 string[] checksums = getChecksums(queryParameter);
 
-                files = db.Files.Where(f => checksums.Contains(f.Checksum)).ToList();
+                files = db.Files.Where(f => checksums.Contains(f.Checksum) && db._ConvertedFiles.All(cf => cf.UUID != f.UUID)).ToList();
                 Console.WriteLine(files.Count);
             }
 
